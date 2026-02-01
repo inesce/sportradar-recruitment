@@ -39,4 +39,53 @@ class MatchTest {
         );
         assertEquals("Home team and away team cannot be null", exception.getMessage());
     }
+
+    @Test
+    void shouldUpdateScore() {
+        Team homeTeam = new Team("Mexico");
+        Team awayTeam = new Team("Canada");
+        Match match = new Match(homeTeam, awayTeam, 1);
+
+        match.updateScore(2, 3);
+
+        assertEquals(2, match.getHomeScore());
+        assertEquals(3, match.getAwayScore());
+    }
+
+    @Test
+    void shouldCalculateTotalScore() {
+        Team homeTeam = new Team("Mexico");
+        Team awayTeam = new Team("Canada");
+        Match match = new Match(homeTeam, awayTeam, 1);
+
+        match.updateScore(2, 3);
+
+        assertEquals(5, match.getTotalScore());
+    }
+
+    @Test
+    void shouldRejectNegativeHomeScore() {
+        Team homeTeam = new Team("Mexico");
+        Team awayTeam = new Team("Canada");
+        Match match = new Match(homeTeam, awayTeam, 1);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> match.updateScore(-1, 0)
+        );
+        assertEquals("Scores cannot be negative", exception.getMessage());
+    }
+
+    @Test
+    void shouldRejectNegativeAwayScore() {
+        Team homeTeam = new Team("Mexico");
+        Team awayTeam = new Team("Canada");
+        Match match = new Match(homeTeam, awayTeam, 1);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> match.updateScore(0, -1)
+        );
+        assertEquals("Scores cannot be negative", exception.getMessage());
+    }
 }
