@@ -31,6 +31,15 @@ class TeamTest {
     }
 
     @Test
+    void shouldThrowExceptionForBlankTeamName() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Team("   ")
+        );
+        assertEquals("Team name cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
     void teamsWithSameNameShouldBeEqual() {
         Team team1 = new Team("Mexico");
         Team team2 = new Team("Mexico");

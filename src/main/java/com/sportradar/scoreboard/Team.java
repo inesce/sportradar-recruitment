@@ -13,7 +13,7 @@ public final class Team {
      * Creates a new Team with the given name.
      *
      * @param name the team name
-     * @throws IllegalArgumentException if name is null or empty
+     * @throws IllegalArgumentException if name is null, empty or blank
      */
     public Team(String name) {
         if (name == null || name.trim().isEmpty()) {
