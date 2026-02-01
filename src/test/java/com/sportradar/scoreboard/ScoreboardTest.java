@@ -55,4 +55,34 @@ class ScoreboardTest {
         );
         assertEquals("Home team and away team must be different", exception.getMessage());
     }
+
+    @Test
+    void shouldRemoveGameWhenFinished() {
+        scoreboard.startGame("Mexico", "Canada");
+        scoreboard.finishGame("Mexico", "Canada");
+
+        List<Match> summary = scoreboard.getSummary();
+        assertTrue(summary.isEmpty());
+    }
+
+    @Test
+    void shouldRemoveCorrectGameWhenMultipleGamesExist() {
+        scoreboard.startGame("Mexico", "Canada");
+        scoreboard.startGame("Spain", "Brazil");
+
+        scoreboard.finishGame("Mexico", "Canada");
+
+        List<Match> summary = scoreboard.getSummary();
+        assertEquals(1, summary.size());
+        assertEquals("Spain", summary.get(0).getHomeTeam().getName());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFinishingNonExistentGame() {
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> scoreboard.finishGame("Mexico", "Canada")
+        );
+        assertEquals("Match between Mexico and Canada does not exist", exception.getMessage());
+    }
 }
