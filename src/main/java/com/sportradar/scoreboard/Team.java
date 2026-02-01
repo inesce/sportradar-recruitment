@@ -1,5 +1,7 @@
 package com.sportradar.scoreboard;
 
+import java.util.Objects;
+
 /**
  * Value object representing a football team.
  * Team names are immutable and validated upon creation.
@@ -26,6 +28,24 @@ public final class Team {
      * @return the team name
      */
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return Objects.equals(name, team.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
         return name;
     }
 }
