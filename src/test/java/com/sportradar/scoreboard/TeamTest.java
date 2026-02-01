@@ -29,4 +29,32 @@ class TeamTest {
         );
         assertEquals("Team name cannot be null or empty", exception.getMessage());
     }
+
+    @Test
+    void teamsWithSameNameShouldBeEqual() {
+        Team team1 = new Team("Mexico");
+        Team team2 = new Team("Mexico");
+        assertEquals(team1, team2);
+    }
+
+    @Test
+    void teamsWithSameNameShouldHaveSameHashCode() {
+        Team team1 = new Team("Mexico");
+        Team team2 = new Team("Mexico");
+        assertEquals(team1.hashCode(), team2.hashCode());
+    }
+
+    @Test
+    void teamsWithDifferentNamesShouldNotBeEqual() {
+        Team team1 = new Team("Mexico");
+        Team team2 = new Team("Canada");
+        assertNotEquals(team1, team2);
+    }
+
+    @Test
+    void teamNamesShouldBeCaseSensitive() {
+        Team team1 = new Team("Mexico");
+        Team team2 = new Team("mexico");
+        assertNotEquals(team1, team2);
+    }
 }
