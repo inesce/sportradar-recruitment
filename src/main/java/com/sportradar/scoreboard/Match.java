@@ -31,6 +31,21 @@ public class Match {
     }
 
     /**
+     * Updates the score of the match.
+     *
+     * @param homeScore the new home team score
+     * @param awayScore the new away team score
+     * @throws IllegalArgumentException if either score is negative
+     */
+    public void updateScore(int homeScore, int awayScore) {
+        if (homeScore < 0 || awayScore < 0) {
+            throw new IllegalArgumentException("Scores cannot be negative");
+        }
+        this.homeScore = homeScore;
+        this.awayScore = awayScore;
+    }
+
+    /**
      * Returns the home team.
      *
      * @return the home team
@@ -64,6 +79,15 @@ public class Match {
      */
     public int getAwayScore() {
         return awayScore;
+    }
+
+    /**
+     * Returns the total score (sum of home and away scores).
+     *
+     * @return the total score
+     */
+    public int getTotalScore() {
+        return homeScore + awayScore;
     }
 
     @Override
