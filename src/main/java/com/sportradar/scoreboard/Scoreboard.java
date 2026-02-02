@@ -51,6 +51,31 @@ public class Scoreboard {
     }
 
     /**
+     * Updates the score of an existing match.
+     *
+     * @param homeTeamName the home team name
+     * @param awayTeamName the away team name
+     * @param homeScore the new home team score
+     * @param awayScore the new away team score
+     * @throws IllegalArgumentException if team names are invalid or scores are negative
+     * @throws IllegalStateException if the match does not exist
+     */
+    public void updateScore(String homeTeamName, String awayTeamName, int homeScore, int awayScore) {
+        Team homeTeam = new Team(homeTeamName);
+        Team awayTeam = new Team(awayTeamName);
+        MatchKey key = new MatchKey(homeTeam, awayTeam);
+
+        Match match = matches.get(key);
+        if (match == null) {
+            throw new IllegalStateException(
+                    String.format("Match between %s and %s does not exist", homeTeamName, awayTeamName)
+            );
+        }
+
+        match.updateScore(homeScore, awayScore);
+    }
+
+    /**
      * Finishes a game and removes it from the scoreboard.
      *
      * @param homeTeamName the home team name
