@@ -90,6 +90,15 @@ public class Match {
         return homeScore + awayScore;
     }
 
+    /**
+     * Returns the creation order of this match.
+     *
+     * @return the creation order
+     */
+    public long getCreationOrder() {
+        return creationOrder;
+    }
+
     @Override
     public String toString() {
         return homeTeam + " " + homeScore + " - " + awayTeam + " " + awayScore;

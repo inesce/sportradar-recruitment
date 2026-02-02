@@ -1,6 +1,7 @@
 package com.sportradar.scoreboard;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Scoreboard for managing live football matches.
@@ -98,12 +99,20 @@ public class Scoreboard {
     }
 
     /**
-     * Returns a list of all matches
+     * Returns a summary of all matches ordered by:
+     * 1. Total score (descending)
+     * 2. Most recently added (for matches with same total score)
      *
-     * @return list of matches
+     * @return list of matches in the specified order
      */
     public List<Match> getSummary() {
-        return new ArrayList<>(matches.values());  // no sorting yet
+        return matches.values().stream()
+                .sorted(
+                        Comparator.comparingInt(Match::getTotalScore)
+                                .thenComparingLong(Match::getCreationOrder)
+                                .reversed()
+                )
+                .collect(Collectors.toList());
     }
 
     /**
