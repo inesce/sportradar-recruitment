@@ -128,4 +128,41 @@ class ScoreboardTest {
         assertEquals("Scores cannot be negative", exception.getMessage());
     }
 
+    @Test
+    void shouldReturnEmptySummaryWhenNoGames() {
+        List<Match> summary = scoreboard.getSummary();
+
+        assertNotNull(summary);
+        assertTrue(summary.isEmpty());
+    }
+
+    @Test
+    void shouldReturnSummaryOrderedByTotalScoreDescending() {
+        scoreboard.startGame("Mexico", "Canada");
+        scoreboard.startGame("Spain", "Brazil");
+
+        scoreboard.updateScore("Mexico", "Canada", 0, 5);  // Total: 5
+        scoreboard.updateScore("Spain", "Brazil", 10, 2);  // Total: 12
+
+        List<Match> summary = scoreboard.getSummary();
+
+        assertEquals(2, summary.size());
+        assertEquals("Spain", summary.get(0).getHomeTeam().getName());
+        assertEquals("Mexico", summary.get(1).getHomeTeam().getName());
+    }
+
+    @Test
+    void gamesWithSameTotalScoreShouldBeOrderedByMostRecentlyAdded() {
+        scoreboard.startGame("Mexico", "Canada");      // Added first
+        scoreboard.startGame("Spain", "Brazil");       // Added second
+
+        scoreboard.updateScore("Mexico", "Canada", 2, 3);  // Total: 5
+        scoreboard.updateScore("Spain", "Brazil", 3, 2);   // Total: 5
+
+        List<Match> summary = scoreboard.getSummary();
+
+        // Spain-Brazil should come first (added more recently)
+        assertEquals("Spain", summary.get(0).getHomeTeam().getName());
+        assertEquals("Mexico", summary.get(1).getHomeTeam().getName());
+    }
 }
