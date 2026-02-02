@@ -85,4 +85,47 @@ class ScoreboardTest {
         );
         assertEquals("Match between Mexico and Canada does not exist", exception.getMessage());
     }
+
+    @Test
+    void shouldUpdateGameScore() {
+        scoreboard.startGame("Mexico", "Canada");
+        scoreboard.updateScore("Mexico", "Canada", 0, 5);
+
+        List<Match> summary = scoreboard.getSummary();
+        assertEquals(0, summary.get(0).getHomeScore());
+        assertEquals(5, summary.get(0).getAwayScore());
+    }
+
+    @Test
+    void shouldUpdateScoreMultipleTimes() {
+        scoreboard.startGame("Mexico", "Canada");
+        scoreboard.updateScore("Mexico", "Canada", 0, 1);
+        scoreboard.updateScore("Mexico", "Canada", 0, 2);
+        scoreboard.updateScore("Mexico", "Canada", 0, 5);
+
+        List<Match> summary = scoreboard.getSummary();
+        assertEquals(0, summary.get(0).getHomeScore());
+        assertEquals(5, summary.get(0).getAwayScore());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingNonExistentGame() {
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> scoreboard.updateScore("Mexico", "Canada", 0, 5)
+        );
+        assertEquals("Match between Mexico and Canada does not exist", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionForNegativeScoresInUpdate() {
+        scoreboard.startGame("Mexico", "Canada");
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> scoreboard.updateScore("Mexico", "Canada", -1, 0)
+        );
+        assertEquals("Scores cannot be negative", exception.getMessage());
+    }
+
 }
